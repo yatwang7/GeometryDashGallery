@@ -271,38 +271,58 @@ h2 {
 
 /* === Gradient themes per difficulty === */
 .badge-auto {
-  background: radial-gradient(circle at top, #00fff2 0%, #00aaff 80%);
+  background: radial-gradient(circle at top, #00fff2 0%, #ffb700 80%);
   box-shadow: 0 0 25px #00d9ff;
 }
 
 .badge-easy {
-  background: radial-gradient(circle at top, #00ff80 0%, #008f4f 80%);
-  box-shadow: 0 0 25px #00ff80;
+  background: radial-gradient(circle at top, #00aaff 0%, #00588f 80%);
+  box-shadow: 0 0 25px #00bfff;
 }
 
 .badge-normal {
-  background: radial-gradient(circle at top, #5da6ff 0%, #004fff 85%);
-  box-shadow: 0 0 25px #007bff;
+  background: radial-gradient(circle at top, #06e40d 0%, #1abc0b 85%);
+  box-shadow: 0 0 25px #00ff15;
 }
 
 .badge-hard {
-  background: radial-gradient(circle at top, #ffb300 0%, #ff6b00 85%);
+  background: radial-gradient(circle at top, #ff9500 0%, #ff6f00 85%);
   box-shadow: 0 0 25px #ff8c00;
 }
 
 .badge-harder {
-  background: radial-gradient(circle at top, #ff6b00 0%, #b02a00 85%);
+  background: radial-gradient(circle at top, #ff5900 0%, #b01d00 85%);
   box-shadow: 0 0 25px #ff4800;
 }
 
 .badge-insane {
-  background: radial-gradient(circle at top, #c43eff 0%, #6500cc 85%);
+  background: radial-gradient(circle at top, #d935e8 0%, #a000cc 85%);
   box-shadow: 0 0 25px #b200ff;
 }
 
-.badge-demon {
-  background: radial-gradient(circle at top, #ff002e 0%, #6e0000 85%);
-  box-shadow: 0 0 35px #ff002e;
+.badge-easy-demon {
+  background: radial-gradient(circle at top, #2698af 0%, #5c0c66 0%);
+  box-shadow: 0 0 35px #470886;
+}
+
+.badge-medium-demon {
+  background: radial-gradient(circle at top, #10b088 0%, #971187 0%);
+  box-shadow: 0 0 35px #c010c0;
+}
+
+.badge-hard-demon {
+  background: radial-gradient(circle at top, #2fc32f 0%, #a1070e 0%);
+  box-shadow: 0 0 35px #c10c0c;
+}
+
+.badge-insane-demon {
+  background: radial-gradient(circle at top, #c98d14 0%, #790608 0%);
+  box-shadow: 0 0 35px #c10a0a;
+}
+
+.badge-extreme-demon {
+  background: radial-gradient(circle at top, #e0a643 0%, #540303 0%);
+  box-shadow: 0 0 35px #8f0909;
 }
 
 .badge-default {

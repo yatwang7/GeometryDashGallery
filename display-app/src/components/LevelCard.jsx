@@ -13,7 +13,11 @@ function findDifficultyAssets(difficulty = "") {
 
 function getDifficultyClass(difficulty = "") {
   const d = difficulty.toLowerCase().trim();
-  if (d.includes("demon")) return "badge-demon";
+  if (d === "extreme demon") return "badge-extreme-demon";
+  if (d === "insane demon") return "badge-insane-demon";
+  if (d === "hard demon") return "badge-hard-demon";
+  if (d === "medium demon") return "badge-medium-demon";
+  if (d === "easy demon") return "badge-easy-demon";
   if (d === "insane") return "badge-insane";
   if (d === "harder") return "badge-harder";
   if (d === "hard") return "badge-hard";
