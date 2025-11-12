@@ -1,79 +1,92 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
+import { f, auth } from "../utils/firebase";
+import { nonDemonDifficulties, demonDifficulties } from "../data/difficulties";
 
-function LevelForm({ difficulties, onAddLevel }) {
-  const [formData, setFormData] = useState({
-    title: "",
-    difficulty: "",
-    date: "",
-    video: null,
-  });
-
-  const fileInputRef = useRef(null);
-
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData({ ...formData, [name]: files ? files[0] : value });
-  };
+function LevelForm() {
+  const [title, setTitle] = useState("");
+  const [difficulty, setDifficulty] = useState("Easy");
+  const [date, setDate] = useState("");
+  const [video, setVideo] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.difficulty) return;
+    const user = auth.currentUser;
+    if (!user) return alert("Sign in first.");
 
-    const level = {
-      title: formData.title,
-      difficulty: formData.difficulty,
-      date: formData.date,
-      video: formData.video || null,
-    };
+    setUploading(true);
+    let videoURL = null;
 
-    await onAddLevel(level);
+    try {
+      if (video) {
+        const fileRef = f.ref(
+          f.storage,
+          `videos/${user.uid}/${Date.now()}-${video.name}`
+        );
+        await f.uploadBytes(fileRef, video);
+        videoURL = await f.getDownloadURL(fileRef);
+      }
 
-    setFormData({ title: "", difficulty: "", date: "", video: null });
+      await f.addDoc(f.collection(f.db, "levels"), {
+        uid: user.uid,
+        title,
+        difficulty,
+        date,
+        videoURL,
+        createdAt: Date.now(),
+      });
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      setTitle("");
+      setDifficulty("Easy");
+      setDate("");
+      setVideo(null);
+      alert("Level uploaded successfully!");
+    } catch (err) {
+      console.error("Upload failed:", err);
+      alert("Error uploading level.");
+    } finally {
+      setUploading(false);
     }
   };
 
+  const allDifficulties = [...nonDemonDifficulties, ...demonDifficulties];
+
   return (
     <form className="level-form" onSubmit={handleSubmit}>
+      <h2>Add a Level</h2>
+
       <input
         type="text"
-        name="title"
-        placeholder="Level Title"
-        value={formData.title}
-        onChange={handleChange}
+        placeholder="Level title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         required
       />
 
-      <select
-        name="difficulty"
-        value={formData.difficulty}
-        onChange={handleChange}
-        required
-      >
-        <option value="">Select Difficulty</option>
-        {difficulties.map((d) => (
-          <option key={d.name} value={d.name}>{d.name}</option>
+      <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+        {allDifficulties.map((d) => (
+          <option key={d.name} value={d.name}>
+            {d.name}
+          </option>
         ))}
       </select>
 
       <input
         type="date"
-        name="date"
-        value={formData.date}
-        onChange={handleChange}
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
       />
 
       <input
         type="file"
-        name="video"
         accept="video/*"
-        ref={fileInputRef}
-        onChange={handleChange}
+        onChange={(e) => setVideo(e.target.files[0])}
       />
 
-      <button type="submit">Upload Level</button>
+      <button type="submit" disabled={uploading}>
+        {uploading ? "Uploading..." : "Add Level"}
+      </button>
     </form>
   );
 }

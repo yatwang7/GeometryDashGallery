@@ -304,3 +304,69 @@ footer {
   color: var(--muted);
   font-size: 0.9rem;
 }
+
+/* =======================
+   Login Page
+   ======================= */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: radial-gradient(circle at top, #0e0e1a 0%, #090910 100%);
+  color: var(--text-color);
+  font-family: var(--font);
+  text-align: center;
+  overflow: hidden;
+}
+
+.login-container img {
+  width: 80%;
+  max-width: 420px;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 15px var(--accent));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.login-container p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* Google login button */
+.login-btn {
+  background: linear-gradient(90deg, #00d0ff, #00b4e6);
+  color: #000;
+  font-weight: bold;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  box-shadow: 0 0 15px var(--accent);
+  transition: all 0.2s ease;
+}
+
+.login-btn:hover {
+  background: linear-gradient(90deg, var(--accent-hover), var(--accent));
+  box-shadow: 0 0 25px var(--accent);
+  transform: translateY(-2px);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.login-footer {
+  margin-top: 3rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}

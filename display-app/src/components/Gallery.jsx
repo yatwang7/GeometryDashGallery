@@ -1,39 +1,50 @@
-import React, { useState } from 'react';
-import LevelCard from './LevelCard';
-import { difficultyOrder } from '../data/difficulties';
+import React, { useEffect, useState } from "react";
+import { f, auth, listenAuth } from "../utils/firebase";
 
-function Gallery({ levels }) {
-  const [sortBy, setSortBy] = useState('date');
+function Gallery() {
+  const [levels, setLevels] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const sortedLevels = [...levels].sort((a, b) => {
-    if (sortBy === 'date') {
-      return new Date(b.date) - new Date(a.date);
-    } else if (sortBy === 'difficulty') {
-      return (
-        difficultyOrder.indexOf(a.difficulty) -
-        difficultyOrder.indexOf(b.difficulty)
-      );
-    }
-    return 0;
-  });
+  const loadLevels = async () => {
+    const user = auth.currentUser;
+    if (!user) return setLevels([]);
+
+    const q = f.query(
+      f.collection(f.db, "levels"),
+      f.where("uid", "==", user.uid),
+      f.orderBy("createdAt", "desc")
+    );
+
+    const snapshot = await f.getDocs(q);
+    setLevels(snapshot.docs.map((doc) => doc.data()));
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    const unsubscribe = listenAuth(() => loadLevels());
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) return <p>Loading your levels...</p>;
 
   return (
-    <div className="gallery-container">
-      <div className="sort-bar">
-        <label>Sort by: </label>
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <option value="date">Date Completed</option>
-          <option value="difficulty">Difficulty</option>
-        </select>
-      </div>
-
-      <div className="gallery">
-        {sortedLevels.length === 0 ? (
-          <p>No levels uploaded yet.</p>
-        ) : (
-          sortedLevels.map((level, i) => <LevelCard key={i} level={level} />)
-        )}
-      </div>
+    <div className="gallery">
+      {levels.length === 0 ? (
+        <p>No levels uploaded yet.</p>
+      ) : (
+        levels.map((level, i) => (
+          <div className="level-card" key={i}>
+            <h3>{level.title}</h3>
+            <p>{level.difficulty}</p>
+            <p>{level.date}</p>
+            {level.videoURL && (
+              <video width="320" controls>
+                <source src={level.videoURL} type="video/mp4" />
+              </video>
+            )}
+          </div>
+        ))
+      )}
     </div>
   );
 }
