@@ -23,7 +23,7 @@ function getDifficultyClass(difficulty = "") {
   return "badge-default";
 }
 
-function LevelCard({ level }) {
+function LevelCard({ level, onDelete }) {
   const { icon, text } = findDifficultyAssets(level.difficulty);
   const badgeClass = getDifficultyClass(level.difficulty);
   const [videoURL, setVideoURL] = useState(null);
@@ -68,6 +68,13 @@ function LevelCard({ level }) {
           <source src={videoURL} type="video/mp4" />
         </video>
       )}
+
+      <button
+        className="clear-btn"
+        style={{ marginTop: "0.6rem", background: "#c92e2e" }}
+        onClick={onDelete}>
+        Delete
+      </button>
     </div>
   );
 }

@@ -10,17 +10,21 @@ import {
 import {
   getFirestore,
   collection,
-  addDoc,
-  getDocs,
   query,
   where,
   orderBy,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  writeBatch,
+  doc,
 } from "firebase/firestore";
 import {
   getStorage,
   ref,
   uploadBytes,
   getDownloadURL,
+  deleteObject,
 } from "firebase/storage";
 
 // --- Firebase config ---
@@ -54,12 +58,16 @@ export const f = {
   db,
   storage,
   collection,
-  addDoc,
-  getDocs,
   query,
   where,
   orderBy,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  writeBatch,
+  doc,
   ref,
   uploadBytes,
   getDownloadURL,
+  deleteObject,
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { f, auth } from "../utils/firebase";
 import { nonDemonDifficulties, demonDifficulties } from "../data/difficulties";
 
@@ -7,6 +7,7 @@ function LevelForm() {
   const [difficulty, setDifficulty] = useState("");
   const [date, setDate] = useState("");
   const [video, setVideo] = useState(null);
+  const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -46,6 +47,7 @@ function LevelForm() {
       setDifficulty("");
       setDate("");
       setVideo(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
       alert("Level uploaded successfully!");
     } catch (err) {
       console.error("Upload failed:", err);
@@ -92,7 +94,8 @@ function LevelForm() {
       <input
         type="file"
         accept="video/*"
-        onChange={(e) => setVideo(e.target.files[0])}/>
+        onChange={(e) => setVideo(e.target.files[0])}
+        ref={fileInputRef}/>
 
       <button type="submit" disabled={uploading}>
         {uploading ? "Uploading..." : "Add Level"}
