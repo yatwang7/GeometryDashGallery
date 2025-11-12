@@ -4,7 +4,7 @@ import { nonDemonDifficulties, demonDifficulties } from "../data/difficulties";
 
 function LevelForm() {
   const [title, setTitle] = useState("");
-  const [difficulty, setDifficulty] = useState("Easy");
+  const [difficulty, setDifficulty] = useState("");
   const [date, setDate] = useState("");
   const [video, setVideo] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -13,6 +13,11 @@ function LevelForm() {
     e.preventDefault();
     const user = auth.currentUser;
     if (!user) return alert("Sign in first.");
+
+    if (!title.trim()) return alert("Please enter a title.");
+    if (!difficulty) return alert("Please select a difficulty.");
+    if (!date) return alert("Please select a date.");
+    if (!video) return alert("Please upload a video.");
 
     setUploading(true);
     let videoURL = null;
@@ -36,8 +41,9 @@ function LevelForm() {
         createdAt: Date.now(),
       });
 
+      // Reset form
       setTitle("");
-      setDifficulty("Easy");
+      setDifficulty("");
       setDate("");
       setVideo(null);
       alert("Level uploaded successfully!");
@@ -63,7 +69,13 @@ function LevelForm() {
         required
       />
 
-      <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+      <select
+        value={difficulty}
+        onChange={(e) => setDifficulty(e.target.value)}
+        required>
+        <option value="" disabled>
+          Select difficulty
+        </option>
         {allDifficulties.map((d) => (
           <option key={d.name} value={d.name}>
             {d.name}
@@ -75,14 +87,12 @@ function LevelForm() {
         type="date"
         value={date}
         onChange={(e) => setDate(e.target.value)}
-        required
-      />
+        required/>
 
       <input
         type="file"
         accept="video/*"
-        onChange={(e) => setVideo(e.target.files[0])}
-      />
+        onChange={(e) => setVideo(e.target.files[0])}/>
 
       <button type="submit" disabled={uploading}>
         {uploading ? "Uploading..." : "Add Level"}
